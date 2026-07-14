@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تقرير الكوادر الفنية - النصف الأول 2026</title>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap');
+        
+        :root {
+            /* الوضع النهاري */
+            --bg-gradient: linear-gradient(135deg, #e2e8f0 0%, #f8fafc 100%);
+            --card-bg-glass: rgba(255, 255, 255, 0.75);
+            --card-border-glass: rgba(255, 255, 255, 0.6);
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+            --tech-row-bg: rgba(255, 255, 255, 0.85);
+            --tech-row-hover: #ffffff;
+            
+            /* ألوان الواجهة والجهد */
+            --high-effort: #ef4444;
+            --med-effort: #f59e0b;
+            --low-effort: #10b981;
+            --primary: #1e293b;
+            --secondary: #3b82f6;
+            
+            /* ألوان الأقسام */
+            --civil-color: #ea580c;
+            --elec-color: #2563eb;
+            --hvac-color: #8b5cf6;
+            --mech-color: #dc2626;
+            --electric-color: #ca8a04;
+            
+            --neon-glow: none;
+        }
+
+        /* الوضع الليلي (Dark Mode) */
+        [data-theme="dark"] {
+            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #020617 100%);
+            --card-bg-glass: rgba(30, 41, 59, 0.6);
+            --card-border-glass: rgba(255, 255, 255, 0.08);
+            --text-dark: #f8fafc;
+            --text-muted: #94a3b8;
+            --tech-row-bg: rgba(15, 23, 42, 0.6);
+            --tech-row-hover: rgba(30, 41, 59, 0.95);
+            
+            --high-effort: #ff4757;
+            --med-effort: #ffa502;
+            --low-effort: #2ed573;
+            --primary: #f8fafc;
+            
+            --neon-glow: 0 0 15px currentColor;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+            transition: background-color 0.4s, color 0.4s, border-color 0.4s, box-shadow 0.4s, transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            margin: 0;
+            padding: 30px 20px;
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .top-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: absolute;
+            top: 30px; left: 30px; right: 30px;
+            z-index: 10;
+        }
+
+        .theme-toggle-btn {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .theme-toggle-btn:hover { background: rgba(255, 255, 255, 0.25); transform: scale(1.05); }
+
+        .dashboard-header {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            padding: 60px 40px 40px;
+            border-radius: 24px;
+            color: white;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            margin-bottom: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            position: relative;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .dashboard-header::before {
+            content: '';
+            position: absolute;
+            top: -50%; right: -20%;
+            width: 400px; height: 400px;
+            background: radial-gradient(circle, rgba(59,130,246,0.25) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 0;
+        }
+
+        .header-title, .executive-summary { position: relative; z-index: 1; }
+        .header-title { text-align: center; }
+        .header-title h1 { margin: 0 0 10px 0; font-size: 2.4rem; font-weight: 900; letter-spacing: -0.5px; }
+        .header-title p { margin: 0; font-size: 1.15rem; color: #cbd5e1; font-weight: 700; }
+
+        .executive-summary {
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(12px);
+            padding: 25px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .executive-summary h3 { margin: 0 0 12px 0; color: #93c5fd; display: flex; align-items: center; gap: 8px; font-size: 1.3rem; }
+        .executive-summary p { margin: 0; font-size: 1.05rem; color: #f1f5f9; line-height: 1.8; font-weight: 600;}
+
+        /* شريط أدوات التحكم (فلاتر + بحث + مقارنة) */
+        .controls-bar {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .filter-wrapper { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+        .filter-btn { 
+            background-color: var(--card-bg-glass); 
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--card-border-glass); 
+            padding: 12px 25px; border-radius: 50px; 
+            cursor: pointer; font-size: 1.05rem; font-weight: 800; color: var(--text-dark); 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04); 
+        }
+        .filter-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
+        .filter-btn.active { color: white; border-color: transparent; }
+        .filter-btn[data-dept="all"].active { background-color: #3b82f6; box-shadow: 0 8px 25px rgba(59,130,246,0.5); }
+        .filter-btn[data-dept="القسم المدني"].active { background-color: var(--civil-color); box-shadow: 0 8px 25px rgba(234,88,12,0.5); }
+        .filter-btn[data-dept="قسم الإلكترونيات"].active { background-color: var(--elec-color); box-shadow: 0 8px 25px rgba(37,99,235,0.5); }
+        .filter-btn[data-dept="قسم التكييف"].active { background-color: var(--hvac-color); box-shadow: 0 8px 25px rgba(139,92,246,0.5); }
+        .filter-btn[data-dept="قسم الميكانيكا"].active { background-color: var(--mech-color); box-shadow: 0 8px 25px rgba(220,38,38,0.5); }
+        .filter-btn[data-dept="قسم الكهرباء"].active { background-color: var(--electric-color); box-shadow: 0 8px 25px rgba(202,138,4,0.5); }
+
+        .search-compare-wrapper {
+            display: flex;
+            gap: 15px;
+            width: 100%;
+            max-width: 800px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+            position: relative;
+        }
+        .search-box input {
+            width: 100%;
+            padding: 15px 25px 15px 45px;
+            border-radius: 50px;
+            border: 1px solid var(--card-border-glass);
+            background: var(--card-bg-glass);
+            backdrop-filter: blur(10px);
+            color: var(--text-dark);
+            font-size: 1.1rem;
+            font-weight: 600;
+            outline: none;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        }
+        .search-box input:focus {
+            border-color: var(--secondary);
+            box-shadow: 0 10px 25px rgba(59,130,246,0.2);
+        }
+        .search-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+            color: var(--text-muted);
+        }
+
+        .compare-action-btn {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: white; border: none; padding: 15px 30px; border-radius: 50px;
+            font-size: 1.1rem; font-weight: 800; cursor: pointer;
+            box-shadow: 0 10px 25px rgba(59,130,246,0.3); transition: all 0.3s;
+            display: flex; align-items: center; gap: 8px; font-family: 'Cairo', sans-serif;
+        }
+        .compare-action-btn:hover {
+            transform: translateY(-3px); box-shadow: 0 15px 30px rgba(59,130,246,0.4);
+        }
+
+        .kpi-container { display: flex; gap: 20px; margin-bottom: 30px; justify-content: center; flex-wrap: wrap; }
+        .kpi-card {
+            background: var(--card-bg-glass);
+            backdrop-filter: blur(16px);
+            padding: 22px; border-radius: 18px;
+            border: 1px solid var(--card-border-glass);
+            flex: 1; min-width: 220px; max-width: 400px; text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+        }
+        .kpi-card h4 { margin: 0; color: var(--text-muted); font-size: 1.1rem; font-weight: 800;}
+        .kpi-card h2 { margin: 10px 0 0 0; color: var(--text-dark); font-size: 2.4rem; font-weight: 900; }
+        .kpi-card h2 span { font-size: 1.1rem; color: var(--text-muted); font-weight: 700;}
+
+        /* تنسيق بطاقة أفضل 3 فنيين بالقسم */
+        #dept-top-techs { max-width: 900px; flex-basis: 100%; }
+        .top-techs-grid { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; margin-top: 15px; }
+        .top-tech-badge {
+            flex: 1; min-width: 200px; padding: 15px; border-radius: 16px;
+            background: rgba(100, 116, 139, 0.05); border: 1px dashed var(--card-border-glass);
+            transition: transform 0.3s ease;
+        }
+        .top-tech-badge:hover { transform: translateY(-5px); background: var(--tech-row-bg); }
+        .top-tech-badge h5 { margin: 0 0 10px; font-size: 1rem; color: var(--text-muted); font-weight: 800;}
+        .top-tech-badge h3 { margin: 0 0 5px; font-size: 1.3rem; font-weight: 900; color: var(--text-dark); }
+        .badge-high p { margin: 0; font-size: 1.2rem; font-weight: bold; color: var(--high-effort); }
+        .badge-med p { margin: 0; font-size: 1.2rem; font-weight: bold; color: var(--med-effort); }
+        .badge-low p { margin: 0; font-size: 1.2rem; font-weight: bold; color: var(--low-effort); }
+
+        .board-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; }
+        
+        .board-column { 
+            background-color: var(--card-bg-glass); 
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--card-border-glass);
+            border-radius: 24px; padding: 25px; 
+            box-shadow: 0 12px 35px rgba(0,0,0,0.05); 
+            border-top: 6px solid #ccc; 
+            display: flex; flex-direction: column;
+        }
+        .board-column:hover { box-shadow: 0 18px 45px rgba(0,0,0,0.08); transform: translateY(-5px); }
+        .board-column.col-high { border-top-color: var(--high-effort); }
+        .board-column.col-med { border-top-color: var(--med-effort); }
+        .board-column.col-low { border-top-color: var(--low-effort); }
+        
+        [data-theme="dark"] .board-column.col-high { box-shadow: 0 -5px 30px rgba(255, 71, 87, 0.15); }
+        [data-theme="dark"] .board-column.col-med { box-shadow: 0 -5px 30px rgba(255, 165, 2, 0.15); }
+        [data-theme="dark"] .board-column.col-low { box-shadow: 0 -5px 30px rgba(46, 213, 115, 0.15); }
+
+        .column-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 2px dashed rgba(100, 116, 139, 0.2); }
+        .column-header h2 { margin: 0; font-size: 1.4rem; font-weight: 900; display: flex; align-items: center; gap: 10px; }
+        
+        .col-high h2 { color: var(--high-effort); text-shadow: var(--neon-glow); }
+        .col-med h2 { color: var(--med-effort); text-shadow: var(--neon-glow); }
+        .col-low h2 { color: var(--low-effort); text-shadow: var(--neon-glow); }
+
+        .leaderboard-list { display: flex; flex-direction: column; gap: 12px; }
+        
+        .tech-row { 
+            display: flex; flex-direction: column;
+            padding: 16px; 
+            background-color: var(--tech-row-bg); 
+            border-radius: 16px; 
+            border: 1px solid var(--card-border-glass); 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            animation: fadeIn 0.5s ease forwards; opacity: 0; transform: translateY(10px);
+            cursor: pointer; 
+        }
+        .tech-row:hover { transform: translateY(-4px) scale(1.02); background-color: var(--tech-row-hover); box-shadow: 0 10px 25px rgba(0,0,0,0.08); border-color: var(--secondary); }
+
+        .tech-main-info { display: flex; align-items: center; width: 100%; pointer-events: none; }
+
+        @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
+
+        .rank-number { 
+            width: 38px; height: 38px; border-radius: 50%; background-color: rgba(100, 116, 139, 0.1); 
+            color: var(--text-dark); display: flex; align-items: center; justify-content: center; 
+            font-weight: 900; font-size: 1.1rem; margin-left: 15px; flex-shrink: 0; 
+        }
+        .tech-row:nth-child(1) .rank-number { background-color: #fef08a; color: #a16207; font-size: 1.4rem; box-shadow: 0 0 15px rgba(254, 240, 138, 0.6); }
+        .tech-row:nth-child(2) .rank-number { background-color: #e2e8f0; color: #475569; font-size: 1.25rem;}
+        .tech-row:nth-child(3) .rank-number { background-color: #ffedd5; color: #c2410c; font-size: 1.25rem;}
+        
+        .tech-details { flex-grow: 1; }
+        .tech-name { margin: 0 0 4px 0; font-size: 1.15rem; font-weight: 900; color: var(--text-dark); }
+        .tech-dept { margin: 0; font-size: 0.85rem; font-weight: 800; color: var(--text-muted); }
+        
+        .tech-score { font-weight: 900; font-size: 1.4rem; display: flex; align-items: baseline; gap: 4px; }
+        .col-high .tech-score { color: var(--high-effort); }
+        .col-med .tech-score { color: var(--med-effort); }
+        .col-low .tech-score { color: var(--low-effort); }
+
+        .progress-wrapper { display: flex; align-items: center; gap: 12px; margin-top: 14px; pointer-events: none;}
+        .progress-container { flex-grow: 1; height: 8px; background-color: rgba(100, 116, 139, 0.15); border-radius: 10px; overflow: hidden; position: relative; }
+        .progress-fill { 
+            height: 100%; border-radius: 10px; width: 0%; 
+            transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1); 
+            position: relative; overflow: hidden;
+        }
+        
+        .progress-fill::after {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
+            animation: shimmer 2s infinite linear;
+        }
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(200%); }
+        }
+
+        .col-high .progress-fill { background-color: var(--high-effort); box-shadow: var(--neon-glow); }
+        .col-med .progress-fill { background-color: var(--med-effort); box-shadow: var(--neon-glow); }
+        .col-low .progress-fill { background-color: var(--low-effort); box-shadow: var(--neon-glow); }
+
+        .progress-pct {
+            font-weight: 900; font-size: 0.95rem; color: var(--text-muted); width: 45px; text-align: left;
+        }
+
+        .strategy-grid { display: flex; flex-direction: column; gap: 25px; margin-top: 50px; max-width: 1000px; margin-left: auto; margin-right: auto; }
+        .insight-box { background-color: var(--card-bg-glass); backdrop-filter: blur(16px); border: 1px solid var(--card-border-glass); padding: 35px; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); position: relative; overflow: hidden; }
+        .insight-box:hover { box-shadow: 0 15px 40px rgba(0,0,0,0.08); transform: translateX(-5px); }
+        .insight-box::before { content: ''; position: absolute; top: 0; right: 0; width: 8px; height: 100%; }
+        .insight-box.analytical::before { background: #8b5cf6; }
+        .insight-box.interventions::before { background: #10b981; }
+        .insight-box h3 { margin: 0 0 20px 0; font-size: 1.5rem; font-weight: 900; display: flex; align-items: center; gap: 10px; }
+        .insight-box ul { padding-right: 20px; margin: 0; display: flex; flex-direction: column; gap: 15px; }
+        .insight-box li { font-size: 1.05rem; color: var(--text-dark); font-weight: 700; line-height: 1.8; }
+        .insight-box li strong { color: var(--primary); font-weight: 900; background-color: rgba(100,116,139,0.1); padding: 2px 8px; border-radius: 6px;}
+
+        #scrollTopBtn {
+            position: fixed; bottom: 30px; right: 30px;
+            width: 50px; height: 50px; border-radius: 50%;
+            background: var(--card-bg-glass); backdrop-filter: blur(12px);
+            border: 1px solid var(--card-border-glass);
+            color: var(--primary); font-size: 22px; font-weight: bold;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; opacity: 0; visibility: hidden;
+            transform: translateY(20px); transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); z-index: 1000;
+        }
+        #scrollTopBtn.show { opacity: 1; visibility: visible; transform: translateY(0); }
+        #scrollTopBtn:hover {
+            background: var(--secondary); color: white;
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+            border-color: transparent;
+        }
+
+        /* تنسيقات نافذة البطاقة الشخصية ونافذة المقارنة (Modals) */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(5px);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 2000; opacity: 0; visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+        
+        .modal-content {
+            background: var(--bg-gradient);
+            border: 1px solid var(--card-border-glass);
+            border-radius: 24px; padding: 40px; width: 90%; max-width: 500px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+            position: relative; transform: translateY(20px) scale(0.95);
+            transition: all 0.3s ease; text-align: center;
+            max-height: 90vh; overflow-y: auto;
+        }
+        .modal-overlay.active .modal-content { transform: translateY(0) scale(1); }
+        
+        .close-modal {
+            position: absolute; top: 15px; right: 20px;
+            font-size: 1.8rem; font-weight: bold; color: var(--text-muted);
+            cursor: pointer; transition: color 0.2s; z-index: 10;
+        }
+        .close-modal:hover { color: var(--high-effort); }
+        
+        .modal-avatar {
+            width: 80px; height: 80px; background: var(--secondary);
+            color: white; font-size: 2rem; font-weight: 900;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 50%; margin: 0 auto 15px; box-shadow: 0 10px 20px rgba(59,130,246,0.3);
+        }
+        .modal-name { font-size: 1.6rem; font-weight: 900; margin: 0 0 5px; color: var(--text-dark); }
+        .modal-dept { font-size: 1.1rem; font-weight: 700; color: var(--text-muted); margin: 0 0 25px; }
+        
+        .modal-stats-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 25px;
+        }
+        .stat-box {
+            background: var(--card-bg-glass); border: 1px solid var(--card-border-glass);
+            padding: 15px 10px; border-radius: 16px; transition: all 0.3s ease;
+        }
+        .stat-box h5 { margin: 0 0 5px; font-size: 0.9rem; color: var(--text-muted); }
+        .stat-box p { margin: 0; font-size: 1.4rem; font-weight: 900; }
+        .stat-high { color: var(--high-effort); }
+        .stat-med { color: var(--med-effort); }
+        .stat-low { color: var(--low-effort); }
+        
+        .modal-total {
+            background: rgba(59,130,246,0.1); padding: 15px; border-radius: 16px;
+            font-size: 1.2rem; font-weight: 900; color: var(--secondary);
+            border: 1px dashed rgba(59,130,246,0.3); transition: all 0.3s ease;
+        }
+
+        /* تنسيقات نافذة المقارنة */
+        .compare-grid { display: flex; gap: 20px; margin-top: 20px; text-align: center; }
+        .compare-col {
+            flex: 1; background: var(--card-bg-glass); border: 1px solid var(--card-border-glass);
+            border-radius: 16px; padding: 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            display: flex; flex-direction: column;
+        }
+        .compare-select {
+            width: 100%; padding: 12px; margin-bottom: 25px;
+            border-radius: 12px; border: 1px solid var(--card-border-glass);
+            background: var(--tech-row-bg); color: var(--text-dark);
+            font-family: 'Cairo', sans-serif; font-size: 1.05rem; font-weight: bold;
+            outline: none; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+        }
+        .compare-select:focus { border-color: var(--secondary); box-shadow: 0 0 0 3px rgba(59,130,246,0.2); }
+
+        @media (max-width: 768px) {
+            .board-grid { grid-template-columns: 1fr; }
+            .dashboard-header { padding: 80px 25px 25px; }
+            .header-title h1 { font-size: 1.8rem; }
+            .top-controls { top: 15px; left: 15px; right: 15px; flex-direction: column; gap: 10px; align-items: flex-start; }
+            .theme-toggle-btn { font-size: 0.85rem; padding: 6px 12px; }
+            #scrollTopBtn { bottom: 20px; right: 20px; }
+            .compare-grid { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="top-controls">
+    <button id="themeToggleBtn" class="theme-toggle-btn" onclick="toggleTheme()">🌙 الوضع الليلي</button>
+</div>
+
+<div class="container" id="dashboard-content">
+    
+    <div class="dashboard-header">
+        <div class="header-title">
+            <h1>تقييم الكوادر الفنية للنصف الأول - 2026</h1>
+            <p>مستشفى الملك فهد بالهفوف | إدارة الصيانة العامة | الصيانة غير الطبية</p>
+        </div>
+        <div class="executive-summary">
+            <h3>📑 الملخص التنفيذي</h3>
+            <p>تقرير الأداء الميداني التراكمي لنخبة الكوادر الفنية (يناير - يونيو 2026). يعتمد التصنيف حصراً على توثيق مُخرجات النماذج الميدانية المستقلة ، ويهدف إلى إبراز "أعمدة الارتكاز" التشغيلية في كل قسم عبر تصنيف دقيق لحجم الإنجاز وفقاً لمستوى الجهد المبذول (مرتفع، متوسط، منخفض).</p>
+        </div>
+    </div>
+
+    <div class="controls-bar">
+        
+        <div class="filter-wrapper">
+            <button class="filter-btn active" data-dept="all" onclick="switchDepartment('all', this)">📊 كافة الأقسام</button>
+            <button class="filter-btn" data-dept="القسم المدني" onclick="switchDepartment('القسم المدني', this)">🧱 القسم المدني</button>
+            <button class="filter-btn" data-dept="قسم الإلكترونيات" onclick="switchDepartment('قسم الإلكترونيات', this)">🖥️ الإلكترونيات</button>
+            <button class="filter-btn" data-dept="قسم التكييف" onclick="switchDepartment('قسم التكييف', this)">❄️ التكييف</button>
+            <button class="filter-btn" data-dept="قسم الميكانيكا" onclick="switchDepartment('قسم الميكانيكا', this)">⚙️ الميكانيكا</button>
+            <button class="filter-btn" data-dept="قسم الكهرباء" onclick="switchDepartment('قسم الكهرباء', this)">🔌 الكهرباء</button>
+        </div>
+
+        <div class="search-compare-wrapper">
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="searchInput" placeholder="ابحث عن اسم الفني..." oninput="handleSearch()">
+            </div>
+            <button class="compare-action-btn" onclick="openCompareModal()">⚖️ مقارنة فنيين</button>
+        </div>
+
+    </div>
+
+    <div class="kpi-container">
+        <!-- الصف الأول: بطاقات المؤشرات العامة تظهر في كافة الأقسام فقط -->
+        <div class="kpi-card all-depts-card">
+            <h4>🏢 أعلى قسم إنجازاً</h4>
+            <h2 id="kpi-top-dept" style="color: var(--secondary); font-size: 1.8rem; margin-top: 15px;">-</h2>
+        </div>
+        <div class="kpi-card all-depts-card">
+            <h4>🔥 أكثر قسم واجه طوارئ</h4>
+            <h2 id="kpi-top-high-dept" style="color: var(--text-dark); font-size: 1.8rem; margin-top: 15px;">-</h2>
+        </div>
+        <div class="kpi-card all-depts-card">
+            <h4>⚡ مُتصدر الصيانة الوقائية</h4>
+            <h2 id="kpi-top-med-dept" style="color: var(--text-dark); font-size: 1.8rem; margin-top: 15px;">-</h2>
+        </div>
+
+        <!-- فاصل مخفي لإجبار البطاقات التالية على النزول لسطر جديد -->
+        <div class="all-depts-card" style="flex-basis: 100%; height: 0; margin: 0;"></div>
+
+        <!-- الصف الثاني: بطاقات تفصيل الجهد تظهر في كافة الأقسام فقط -->
+        <div class="kpi-card all-depts-card" style="border-top: 4px solid var(--high-effort);">
+            <h4>🔴 أعلى قسم (جهد مرتفع)</h4>
+            <h2 id="kpi-highest-high" style="color: var(--high-effort); font-size: 1.8rem; margin-top: 15px;">-</h2>
+        </div>
+        <div class="kpi-card all-depts-card" style="border-top: 4px solid var(--med-effort);">
+            <h4>🟠 أعلى قسم (جهد متوسط)</h4>
+            <h2 id="kpi-highest-med" style="color: var(--med-effort); font-size: 1.8rem; margin-top: 15px;">-</h2>
+        </div>
+        <div class="kpi-card all-depts-card" style="border-top: 4px solid var(--low-effort);">
+            <h4>🟢 أعلى قسم (جهد منخفض)</h4>
+            <h2 id="kpi-highest-low" style="color: var(--low-effort); font-size: 1.8rem; margin-top: 15px;">-</h2>
+        </div>
+
+        <!-- البطاقة الخاصة: تظهر عند اختيار قسم محدد فقط -->
+        <div class="kpi-card" id="dept-top-techs" style="display: none;">
+            <h4 style="margin-bottom: 20px; font-size: 1.2rem; color: var(--text-dark);">🏆 أفضل 3 فنيين بالقسم (أعمدة الإرتكاز حسب الجُهد)</h4>
+            <div class="top-techs-grid">
+                <div class="top-tech-badge badge-high">
+                    <h5>🔥الجهد المرتفع</h5>
+                    <h3 id="top-tech-high-name">-</h3>
+                    <p id="top-tech-high-score">0 مهمة</p>
+                </div>
+                <div class="top-tech-badge badge-med">
+                    <h5>⚡ الجهد المتوسط</h5>
+                    <h3 id="top-tech-med-name">-</h3>
+                    <p id="top-tech-med-score">0 مهمة</p>
+                </div>
+                <div class="top-tech-badge badge-low">
+                    <h5>🟢 الجهد المنخفض</h5>
+                    <h3 id="top-tech-low-name">-</h3>
+                    <p id="top-tech-low-score">0 مهمة</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="board-grid">
+        <div class="board-column col-high">
+            <div class="column-header">
+                <h2>🔥 الجهد المرتفع (طوارئ وتدخل حرج)</h2>
+            </div>
+            <div class="leaderboard-list" id="list-high"></div>
+        </div>
+        <div class="board-column col-med">
+            <div class="column-header">
+                <h2>⚡ الجهد المتوسط (صيانة وقائية وعامة)</h2>
+            </div>
+            <div class="leaderboard-list" id="list-med"></div>
+        </div>
+        <div class="board-column col-low">
+            <div class="column-header">
+                <h2>🟢 الجهد المنخفض (أعمال روتينية سريعة)</h2>
+            </div>
+            <div class="leaderboard-list" id="list-low"></div>
+        </div>
+    </div>
+
+    <div class="strategy-grid" id="strategy-section">
+        <div class="insight-box analytical">
+            <h3 style="color: #8b5cf6;">📊 الخلاصة التحليلية لأداء الكوادر بالنصف الأول</h3>
+            <ul>
+                <li><strong>تمركز الجهد المرتفع:</strong> سيطر فريق <strong>التكييف</strong> على الجزء الأكبر من المهام ذات الجهد المرتفع نتيجة توالي التدخلات الطارئة (CM) مع ارتفاع درجات الحرارة.</li>
+                <li><strong>استقرار الصيانة الوقائية (PPM):</strong> أظهرت فرق <strong>الإلكترونيات والميكانيكا</strong> انضباطاً عالياً وتصدراً في مؤشرات الجهد المتوسط ، مما يعكس جدولة استباقية ممتازة تقلل من انهيار الأصول.</li>
+                <li><strong>المرونة العالية:</strong> تصدر <strong>القسم المدني</strong> حجم الإنجاز العددي في مهام الجهد المنخفض والمتوسط ، ما يؤكد المرونة العالية للكوادر الفنية في إنهاء سيل البلاغات اليومية بكفاءة استجابة سريعة.</li>
+            </ul>
+        </div>
+        <div class="insight-box interventions">
+            <h3 style="color: #10b981;">🛠️ التدخلات الاستراتيجية الموصى بها</h3>
+            <ul>
+                <li><strong>إعادة توازن الأحمال:</strong> تركيز 60% من مهام الجهد المرتفع لفريق التكييف/الإلكترونيات موكلة لـ6 فنيين فقط  ، وهذا يُنذر بخطر الاحتراق الوظيفي ، يُوصى ببدء تدوير المهام المعقدة لفنيي "الصف الثاني".</li>
+                <li><strong>الاعتماد على القياسات المستقلة:</strong> تم التقييم بناءً على النماذج الميدانية المُوثقة والمستقلة بهدف تقديم تقييمات واقعية وشفافة غير متأثرة بـ "الإغلاق المكتبي" للبلاغات.</li>
+                <li><strong>حافز الأداء:</strong> ربط بيانات هذه اللوحة ببرنامج حوافز نصف سنوي يُكافئ "متصدرِ الأداء" لتعزيز التنافسية وضمان استمرارية الجودة التشغيلية.</li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+<!-- نافذة البطاقة الشخصية (Modal) -->
+<div id="techModal" class="modal-overlay" onclick="closeModal(event, 'techModal')">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <span class="close-modal" onclick="closeModal(event, 'techModal')">&times;</span>
+        <div class="modal-avatar" id="modal-avatar">A</div>
+        <h2 class="modal-name" id="modal-name">اسم الفني</h2>
+        <p class="modal-dept" id="modal-dept">القسم</p>
+        
+        <div class="modal-stats-grid">
+            <div class="stat-box">
+                <h5>جهد مرتفع</h5>
+                <p class="stat-high" id="modal-high">0</p>
+            </div>
+            <div class="stat-box">
+                <h5>جهد متوسط</h5>
+                <p class="stat-med" id="modal-med">0</p>
+            </div>
+            <div class="stat-box">
+                <h5>جهد منخفض</h5>
+                <p class="stat-low" id="modal-low">0</p>
+            </div>
+        </div>
+        <div class="modal-total" id="modal-total">
+            إجمالي الإنجاز: 0 مهمة
+        </div>
+    </div>
+</div>
+
+<!-- نافذة المقارنة بين فنيين -->
+<div id="compareModal" class="modal-overlay" onclick="closeModal(event, 'compareModal')">
+    <div class="modal-content" style="max-width: 900px; width: 95%;" onclick="event.stopPropagation()">
+        <span class="close-modal" onclick="closeModal(event, 'compareModal')">&times;</span>
+        <h2 style="margin-bottom: 25px; color: var(--text-dark); font-weight: 900;">⚖️ مقارنة الأداء بين فنيين</h2>
+        
+        <div class="compare-grid">
+            <div class="compare-col">
+                <select id="comp-select-1" class="compare-select" onchange="updateCompareView()"></select>
+                <div id="comp-details-1" style="display:none; margin-top: 10px;">
+                    <div class="modal-avatar" id="c1-avatar">A</div>
+                    <h3 class="modal-name" id="c1-name">الاسم</h3>
+                    <p class="modal-dept" id="c1-dept">القسم</p>
+                    <div class="modal-stats-grid" style="grid-template-columns: 1fr;">
+                        <div class="stat-box" id="c1-high-box">
+                            <h5 style="display:flex; justify-content:space-between;"><span>جهد مرتفع</span><span class="stat-high" id="c1-high" style="font-size:1.1rem;">0</span></h5>
+                        </div>
+                        <div class="stat-box" id="c1-med-box">
+                            <h5 style="display:flex; justify-content:space-between;"><span>جهد متوسط</span><span class="stat-med" id="c1-med" style="font-size:1.1rem;">0</span></h5>
+                        </div>
+                        <div class="stat-box" id="c1-low-box">
+                            <h5 style="display:flex; justify-content:space-between;"><span>جهد منخفض</span><span class="stat-low" id="c1-low" style="font-size:1.1rem;">0</span></h5>
+                        </div>
+                    </div>
+                    <div class="modal-total" id="c1-total" style="margin-top:15px;">إجمالي: 0</div>
+                </div>
+            </div>
+
+            <div class="compare-col">
+                <select id="comp-select-2" class="compare-select" onchange="updateCompareView()"></select>
+                <div id="comp-details-2" style="display:none; margin-top: 10px;">
+                    <div class="modal-avatar" id="c2-avatar">B</div>
+                    <h3 class="modal-name" id="c2-name">الاسم</h3>
+                    <p class="modal-dept" id="c2-dept">القسم</p>
+                    <div class="modal-stats-grid" style="grid-template-columns: 1fr;">
+                        <div class="stat-box" id="c2-high-box">
+                            <h5 style="display:flex; justify-content:space-between;"><span>جهد مرتفع</span><span class="stat-high" id="c2-high" style="font-size:1.1rem;">0</span></h5>
+                        </div>
+                        <div class="stat-box" id="c2-med-box">
+                            <h5 style="display:flex; justify-content:space-between;"><span>جهد متوسط</span><span class="stat-med" id="c2-med" style="font-size:1.1rem;">0</span></h5>
+                        </div>
+                        <div class="stat-box" id="c2-low-box">
+                            <h5 style="display:flex; justify-content:space-between;"><span>جهد منخفض</span><span class="stat-low" id="c2-low" style="font-size:1.1rem;">0</span></h5>
+                        </div>
+                    </div>
+                    <div class="modal-total" id="c2-total" style="margin-top:15px;">إجمالي: 0</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<button id="scrollTopBtn" onclick="scrollToTop()">↑</button>
+
+<script>
+    // البيانات التراكمية المحدثة
+    const fullStaffDataset = [
+        { name: "عبد الملك", department: "القسم المدني", low: 120, med: 450, high: 80 },
+        { name: "طارق", department: "القسم المدني", low: 150, med: 380, high: 40 },
+        { name: "مهند السعيد", department: "القسم المدني", low: 90, med: 320, high: 110 },
+        { name: "أسلم", department: "القسم المدني", low: 140, med: 310, high: 50 },
+        { name: "سعد بوخديم", department: "القسم المدني", low: 80, med: 290, high: 150 },
+        { name: "نعيم", department: "القسم المدني", low: 210, med: 180, high: 20 },
+        { name: "أرشد", department: "القسم المدني", low: 60, med: 280, high: 90 },
+
+        { name: "عمران", department: "قسم التكييف", low: 30, med: 150, high: 680 },
+        { name: "خالد عمران", department: "قسم التكييف", low: 20, med: 140, high: 620 },
+        { name: "سهيل", department: "قسم التكييف", low: 40, med: 180, high: 540 },
+        { name: "القطان", department: "قسم التكييف", low: 15, med: 90, high: 490 },
+        { name: "أحمد العليوي", department: "قسم التكييف", low: 120, med: 210, high: 380 },
+        { name: "يوسف علي", department: "قسم التكييف", low: 50, med: 190, high: 410 },
+        { name: "ابرار", department: "قسم التكييف", low: 40, med: 110, high: 350 },
+
+        { name: "قاسم خليفة", department: "قسم الميكانيكا", low: 20, med: 480, high: 210 },
+        { name: "فاضل المسيليم", department: "قسم الميكانيكا", low: 15, med: 450, high: 190 },
+        { name: "عباس التريكي", department: "قسم الميكانيكا", low: 30, med: 380, high: 150 },
+        { name: "عبدالرحيم الدحيلان", department: "قسم الميكانيكا", low: 10, med: 80, high: 320 },
+        { name: "عبدالله بوحميد", department: "قسم الميكانيكا", low: 40, med: 310, high: 110 },
+        { name: "احمد الثويني", department: "قسم الميكانيكا", low: 50, med: 260, high: 90 },
+
+        { name: "Sheik Muhammad Iqbal", department: "قسم الإلكترونيات", low: 80, med: 520, high: 130 },
+        { name: "Khalid Raza", department: "قسم الإلكترونيات", low: 60, med: 480, high: 110 },
+        { name: "Ali Abdullah AlAzeeb", department: "قسم الإلكترونيات", low: 50, med: 410, high: 90 },
+        { name: "Mahdi Alnaasir", department: "قسم الإلكترونيات", low: 90, med: 390, high: 70 },
+        { name: "Nasser Saud Bon", department: "قسم الإلكترونيات", low: 40, med: 350, high: 60 },
+        { name: "Perwez Alam", department: "قسم الإلكترونيات", low: 110, med: 320, high: 40 },
+        { name: "Abdullah AlAradi", department: "قسم الإلكترونيات", low: 150, med: 280, high: 30 },
+        
+        { name: "MAHBOOR RAHMAN", department: "قسم الكهرباء", low: 110, med: 430, high: 150 },
+        { name: "JAHIRUL HOQUE", department: "قسم الكهرباء", low: 90, med: 460, high: 120 },
+        { name: "MOHAMMAD BILAL", department: "قسم الكهرباء", low: 130, med: 380, high: 100 },
+        { name: "ISRAR MOHAMMED", department: "قسم الكهرباء", low: 140, med: 350, high: 90 },
+        { name: "AFTAB ALAM", department: "قسم الكهرباء", low: 180, med: 310, high: 70 }
+    ];
+
+    let currentSelectedDept = 'all';
+
+    function toggleTheme() {
+        const body = document.body;
+        const btn = document.getElementById('themeToggleBtn');
+        if (body.getAttribute('data-theme') === 'dark') {
+            body.removeAttribute('data-theme');
+            btn.innerHTML = '🌙 الوضع الليلي';
+        } else {
+            body.setAttribute('data-theme', 'dark');
+            btn.innerHTML = '☀️ الوضع النهاري';
+        }
+    }
+
+    function renderDashboard() {
+        const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+        
+        let filteredData = fullStaffDataset.filter(item => {
+            const matchDept = currentSelectedDept === 'all' || item.department === currentSelectedDept;
+            const matchSearch = item.name.toLowerCase().includes(searchTerm);
+            return matchDept && matchSearch;
+        });
+
+        const allDeptsCards = document.querySelectorAll('.all-depts-card');
+        const strategySection = document.getElementById('strategy-section');
+        const deptTopTechsCard = document.getElementById('dept-top-techs');
+
+        // التحكم في ظهور العناصر بناءً على الفلتر
+        if (currentSelectedDept === 'all' && searchTerm === '') {
+            allDeptsCards.forEach(card => card.style.display = '');
+            strategySection.style.display = '';
+            deptTopTechsCard.style.display = 'none';
+            // تحديث بطاقات الأداء الشاملة
+            updateKPIs(filteredData);
+        } else {
+            allDeptsCards.forEach(card => card.style.display = 'none');
+            strategySection.style.display = 'none';
+            
+            // إظهار بطاقة أفضل الفنيين بالقسم فقط إذا تم اختيار قسم محدد
+            if (currentSelectedDept !== 'all') {
+                deptTopTechsCard.style.display = '';
+                updateDeptTopTechs(filteredData);
+            } else {
+                deptTopTechsCard.style.display = 'none';
+            }
+        }
+
+        populateColumn('list-high', filteredData, 'high');
+        populateColumn('list-med', filteredData, 'med');
+        populateColumn('list-low', filteredData, 'low');
+    }
+
+    function handleSearch() {
+        renderDashboard();
+    }
+
+    function switchDepartment(dept, btnElement) {
+        document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+        btnElement.classList.add('active');
+        currentSelectedDept = dept;
+        renderDashboard();
+    }
+
+    // تحديث بطاقات مؤشرات الأداء الشاملة والتفصيلية
+    function updateKPIs(dataset) {
+        const deptTotals = {};
+        const deptHighTotals = {};
+        const deptMedTotals = {};
+        const deptLowTotals = {};
+
+        dataset.forEach(staff => {
+            const total = staff.low + staff.med + staff.high;
+            
+            // الإجمالي العام لكل قسم
+            deptTotals[staff.department] = (deptTotals[staff.department] || 0) + total;
+            
+            // إجمالي الجهد المرتفع لكل قسم
+            deptHighTotals[staff.department] = (deptHighTotals[staff.department] || 0) + staff.high;
+            
+            // إجمالي الجهد المتوسط لكل قسم
+            deptMedTotals[staff.department] = (deptMedTotals[staff.department] || 0) + staff.med;
+
+            // إجمالي الجهد المنخفض لكل قسم
+            deptLowTotals[staff.department] = (deptLowTotals[staff.department] || 0) + staff.low;
+        });
+        
+        // حساب أعلى قسم إنجازاً
+        let topDept = "-";
+        let maxDeptTasks = 0;
+        for (const [dept, total] of Object.entries(deptTotals)) {
+            if (total > maxDeptTasks) { maxDeptTasks = total; topDept = dept; }
+        }
+
+        // حساب أكثر قسم واجه طوارئ / جهد مرتفع
+        let topHighDept = "-";
+        let maxHighTasks = 0;
+        for (const [dept, total] of Object.entries(deptHighTotals)) {
+            if (total > maxHighTasks) { maxHighTasks = total; topHighDept = dept; }
+        }
+
+        // حساب بطل الصيانة الوقائية / جهد متوسط
+        let topMedDept = "-";
+        let maxMedTasks = 0;
+        for (const [dept, total] of Object.entries(deptMedTotals)) {
+            if (total > maxMedTasks) { maxMedTasks = total; topMedDept = dept; }
+        }
+
+        // حساب أعلى قسم جهد منخفض
+        let topLowDept = "-";
+        let maxLowTasks = 0;
+        for (const [dept, total] of Object.entries(deptLowTotals)) {
+            if (total > maxLowTasks) { maxLowTasks = total; topLowDept = dept; }
+        }
+        
+        // تحديث النصوص والتنسيقات في بطاقات الصف الأول
+        document.getElementById('kpi-top-dept').innerHTML = 
+            topDept.replace('القسم ', '').replace('قسم ', '') + 
+            `<div style="font-size:1.1rem; color:var(--text-muted); font-weight:800; margin-top:5px;">${maxDeptTasks} مهمة إجمالية</div>`;
+
+        document.getElementById('kpi-top-high-dept').innerHTML = 
+            topHighDept.replace('القسم ', '').replace('قسم ', '') + 
+            `<div style="font-size:1.1rem; color:var(--high-effort); font-weight:800; margin-top:5px;">${maxHighTasks} مهمة طارئة</div>`;
+
+        document.getElementById('kpi-top-med-dept').innerHTML = 
+            topMedDept.replace('القسم ', '').replace('قسم ', '') + 
+            `<div style="font-size:1.1rem; color:var(--med-effort); font-weight:800; margin-top:5px;">${maxMedTasks} مهمة وقائية</div>`;
+
+        // تحديث النصوص والتنسيقات في بطاقات الصف الثاني
+        document.getElementById('kpi-highest-high').innerHTML = 
+            topHighDept.replace('القسم ', '').replace('قسم ', '') + 
+            `<div style="font-size:1.1rem; color:var(--text-muted); font-weight:800; margin-top:5px;">${maxHighTasks} مهمة</div>`;
+
+        document.getElementById('kpi-highest-med').innerHTML = 
+            topMedDept.replace('القسم ', '').replace('قسم ', '') + 
+            `<div style="font-size:1.1rem; color:var(--text-muted); font-weight:800; margin-top:5px;">${maxMedTasks} مهمة</div>`;
+
+        document.getElementById('kpi-highest-low').innerHTML = 
+            topLowDept.replace('القسم ', '').replace('قسم ', '') + 
+            `<div style="font-size:1.1rem; color:var(--text-muted); font-weight:800; margin-top:5px;">${maxLowTasks} مهمة</div>`;
+    }
+
+    // دالة لاستخراج وعرض أفضل فني لكل مستوى جهد في القسم
+    function updateDeptTopTechs(data) {
+        if (!data || data.length === 0) return;
+        
+        // استخراج الأول في كل جهد
+        const topHigh = [...data].sort((a,b) => b.high - a.high)[0];
+        const topMed = [...data].sort((a,b) => b.med - a.med)[0];
+        const topLow = [...data].sort((a,b) => b.low - a.low)[0];
+        
+        document.getElementById('top-tech-high-name').innerText = topHigh.name;
+        document.getElementById('top-tech-high-score').innerText = topHigh.high + ' مهمة';
+        
+        document.getElementById('top-tech-med-name').innerText = topMed.name;
+        document.getElementById('top-tech-med-score').innerText = topMed.med + ' مهمة';
+        
+        document.getElementById('top-tech-low-name').innerText = topLow.name;
+        document.getElementById('top-tech-low-score').innerText = topLow.low + ' مهمة';
+    }
+
+    function populateColumn(elementId, dataset, effortType) {
+        const container = document.getElementById(elementId);
+        container.innerHTML = '';
+
+        const sortedData = [...dataset].sort((a, b) => b[effortType] - a[effortType]);
+        const top10 = sortedData.slice(0, 10);
+
+        if(top10.length === 0) {
+            container.innerHTML = `<p style="text-align:center; color:var(--text-muted); padding:20px; font-weight: 800;">لا توجد بيانات مطابقة</p>`;
+            return;
+        }
+
+        const maxScore = top10[0][effortType];
+
+        top10.forEach((staff, index) => {
+            const row = document.createElement('div');
+            row.className = 'tech-row';
+            row.style.animationDelay = `${index * 0.05}s`;
+            row.onclick = () => openModal(staff); 
+            
+            let rankDisplay = index + 1;
+            if (index === 0) rankDisplay = '🥇';
+            if (index === 1) rankDisplay = '🥈';
+            if (index === 2) rankDisplay = '🥉';
+
+            const percentage = maxScore > 0 ? (staff[effortType] / maxScore) * 100 : 0;
+
+            row.innerHTML = `
+                <div class="tech-main-info">
+                    <div class="rank-number">${rankDisplay}</div>
+                    <div class="tech-details">
+                        <h4 class="tech-name">${staff.name}</h4>
+                        <p class="tech-dept">${staff.department}</p>
+                    </div>
+                    <div class="tech-score">
+                        ${staff[effortType]}<span style="font-size:12.5px; margin-right:5px; font-weight:800;">مهمة</span>
+                    </div>
+                </div>
+                <div class="progress-wrapper">
+                    <div class="progress-container">
+                        <div class="progress-fill" style="width: 0%"></div>
+                    </div>
+                    <span class="progress-pct">0%</span>
+                </div>
+            `;
+            container.appendChild(row);
+
+            setTimeout(() => {
+                const fillElement = row.querySelector('.progress-fill');
+                const pctElement = row.querySelector('.progress-pct');
+                fillElement.style.width = `${percentage}%`;
+                
+                let start = 0;
+                const duration = 1500; 
+                const increment = percentage / (duration / 16); 
+                
+                function animatePct() {
+                    start += increment;
+                    if (start < percentage) {
+                        pctElement.innerText = Math.floor(start) + '%';
+                        requestAnimationFrame(animatePct);
+                    } else {
+                        pctElement.innerText = Math.floor(percentage) + '%';
+                    }
+                }
+                requestAnimationFrame(animatePct);
+            }, 100);
+        });
+    }
+
+    function openModal(staff) {
+        document.getElementById('modal-avatar').innerText = staff.name.charAt(0);
+        document.getElementById('modal-name').innerText = staff.name;
+        document.getElementById('modal-dept').innerText = staff.department;
+        document.getElementById('modal-high').innerText = staff.high;
+        document.getElementById('modal-med').innerText = staff.med;
+        document.getElementById('modal-low').innerText = staff.low;
+        
+        const total = staff.high + staff.med + staff.low;
+        document.getElementById('modal-total').innerText = `إجمالي الإنجاز: ${total} مهمة`;
+        
+        document.getElementById('techModal').classList.add('active');
+    }
+
+    function populateCompareDropdowns() {
+        const s1 = document.getElementById('comp-select-1');
+        const s2 = document.getElementById('comp-select-2');
+        
+        s1.innerHTML = '<option value="">اختر الفني الأول...</option>';
+        s2.innerHTML = '<option value="">اختر الفني الثاني...</option>';
+        
+        const sortedStaff = [...fullStaffDataset].sort((a, b) => a.name.localeCompare(b.name, 'ar'));
+        
+        sortedStaff.forEach(staff => {
+            const opt1 = document.createElement('option');
+            opt1.value = staff.name;
+            opt1.textContent = `${staff.name} (${staff.department})`;
+            s1.appendChild(opt1);
+            
+            const opt2 = document.createElement('option');
+            opt2.value = staff.name;
+            opt2.textContent = `${staff.name} (${staff.department})`;
+            s2.appendChild(opt2);
+        });
+    }
+
+    function openCompareModal() {
+        document.getElementById('compareModal').classList.add('active');
+    }
+
+    function closeModal(event, modalId) {
+        if(event) event.preventDefault();
+        document.getElementById(modalId).classList.remove('active');
+    }
+
+    function updateCompareView() {
+        const n1 = document.getElementById('comp-select-1').value;
+        const n2 = document.getElementById('comp-select-2').value;
+        
+        const staff1 = fullStaffDataset.find(s => s.name === n1);
+        const staff2 = fullStaffDataset.find(s => s.name === n2);
+        
+        renderCompareSide(staff1, 1);
+        renderCompareSide(staff2, 2);
+
+        if(staff1 && staff2) {
+            highlightWinner('high', staff1.high, staff2.high);
+            highlightWinner('med', staff1.med, staff2.med);
+            highlightWinner('low', staff1.low, staff2.low);
+            highlightWinner('total', (staff1.high+staff1.med+staff1.low), (staff2.high+staff2.med+staff2.low));
+        } else {
+            resetHighlights();
+        }
+    }
+
+    function renderCompareSide(staff, side) {
+        const container = document.getElementById(`comp-details-${side}`);
+        if(!staff) {
+            container.style.display = 'none';
+            return;
+        }
+        container.style.display = 'block';
+        document.getElementById(`c${side}-avatar`).innerText = staff.name.charAt(0);
+        document.getElementById(`c${side}-name`).innerText = staff.name;
+        document.getElementById(`c${side}-dept`).innerText = staff.department;
+        document.getElementById(`c${side}-high`).innerText = staff.high;
+        document.getElementById(`c${side}-med`).innerText = staff.med;
+        document.getElementById(`c${side}-low`).innerText = staff.low;
+        
+        const total = staff.high + staff.med + staff.low;
+        document.getElementById(`c${side}-total`).innerText = `إجمالي: ${total} مهمة`;
+    }
+
+    function highlightWinner(statType, val1, val2) {
+        const box1 = statType === 'total' ? document.getElementById('c1-total') : document.getElementById(`c1-${statType}-box`);
+        const box2 = statType === 'total' ? document.getElementById('c2-total') : document.getElementById(`c2-${statType}-box`);
+        
+        box1.style.border = '1px solid var(--card-border-glass)'; box1.style.boxShadow = 'none';
+        box2.style.border = '1px solid var(--card-border-glass)'; box2.style.boxShadow = 'none';
+
+        if (val1 > val2) {
+            box1.style.border = '2px solid var(--secondary)';
+            box1.style.boxShadow = '0 0 15px rgba(59,130,246,0.3)';
+        } else if (val2 > val1) {
+            box2.style.border = '2px solid var(--secondary)';
+            box2.style.boxShadow = '0 0 15px rgba(59,130,246,0.3)';
+        }
+    }
+
+    function resetHighlights() {
+        ['high', 'med', 'low', 'total'].forEach(statType => {
+            const box1 = statType === 'total' ? document.getElementById('c1-total') : document.getElementById(`c1-${statType}-box`);
+            const box2 = statType === 'total' ? document.getElementById('c2-total') : document.getElementById(`c2-${statType}-box`);
+            if(box1) { box1.style.border = '1px solid var(--card-border-glass)'; box1.style.boxShadow = 'none'; }
+            if(box2) { box2.style.border = '1px solid var(--card-border-glass)'; box2.style.boxShadow = 'none'; }
+        });
+    }
+
+    window.addEventListener("scroll", () => {
+        const scrollBtn = document.getElementById("scrollTopBtn");
+        if (window.scrollY > 300) {
+            scrollBtn.classList.add("show");
+        } else {
+            scrollBtn.classList.remove("show");
+        }
+    });
+
+    function scrollToTop() {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        switchDepartment('all', document.querySelector('.filter-btn[data-dept="all"]'));
+        populateCompareDropdowns();
+    });
+</script>
+
+</body>
+</html>
